@@ -1,11 +1,22 @@
 <template>
-  <div id="msa-overview">
-    <canvas id="msa-overview-canvas" :width="width" :height="height"> </canvas>
+  <div id="msa-overview" ref="msa-overview">
+    <canvas ref="msa-overview-canvas" :width="width" :height="height"> </canvas>
+    <canvas
+      ref="msa-overview-selection"
+      :width="width"
+      :height="height"
+      @mousedown="mousedown"
+      @mouseup="mouseup"
+      @mousemove="mousemove"
+    >
+    </canvas>
   </div>
 </template>
 
 <script>
 import * as d3 from "d3";
+
+let drag = false;
 
 export default {
   name: "MsaOverview",
@@ -14,7 +25,7 @@ export default {
     seqs: {
       type: Array,
       default: () => {
-        return [];
+        return null;
       }
     },
     width: {
@@ -24,15 +35,95 @@ export default {
     height: {
       type: Number,
       default: 300
+    },
+    selection: {
+      type: Object,
+      default: () => {
+        return null;
+      }
+    }
+  },
+  data() {
+    return {
+      rect: {
+        type: Object,
+        default: () => {
+          return {};
+        }
+      }
+    };
+  },
+
+  computed: {
+    maxLength() {
+      let a_lengths = this.seqs.map(seq => seq.seq.length);
+      return d3.max(a_lengths);
     }
   },
   watch: {
     seqs() {
-      this.drawCustom();
+      this.drawAlignment();
+      this.setSelection();
+    },
+    selection() {
+      this.setSelection();
     }
   },
-
+  mounted() {
+    this.drawAlignment();
+    this.setSelection();
+  },
+  updated() {
+    this.drawAlignment();
+    this.setSelection();
+  },
   methods: {
+    setSelection() {
+      if (this.selection == null || this.seqs == null) {
+        return;
+      }
+
+      if (
+        this.selection.startSeq &&
+        this.selection.endSeq &&
+        this.selection.startPos &&
+        this.selection.endPos
+      ) {
+        console.log("draw predefined selection");
+
+        let startSeq =
+          this.selection.startSeq < 0 ? 0 : this.selection.startSeq;
+
+        let endSeq =
+          this.selection.endSeq >= this.seqs.length
+            ? this.seqs.length - 1
+            : this.selection.endSeq;
+
+        let startPos =
+          this.selection.startPos < 0 ? 0 : this.selection.startPos;
+
+        let endPos =
+          this.selection.endPos >= this.maxLength
+            ? this.maxLength - 1
+            : this.selection.endPos;
+
+        var xScale = d3
+          .scaleLinear()
+          .range([1, this.width])
+          .domain([0, this.maxLength]);
+        var yScale = d3
+          .scaleLinear()
+          .range([10, this.height])
+          .domain([0, this.seqs.length]);
+
+        this.$set(this.rect, "startX", xScale(startPos));
+        this.$set(this.rect, "startY", yScale(startSeq));
+
+        this.$set(this.rect, "h", yScale(endSeq + 1) - this.rect.startY);
+        this.$set(this.rect, "w", xScale(endPos + 1) - this.rect.startX);
+        this.drawSelection();
+      }
+    },
     getMaxLength() {
       let a_lengths = this.seqs.map(seq => seq.seq.length);
       return d3.max(a_lengths);
@@ -42,7 +133,7 @@ export default {
       let a_letterData = [];
 
       this.seqs.forEach((seq, indexSeq) => {
-        let a_letters = seq.split_seq;
+        let a_letters = seq.seq.split("");
 
         a_letters.forEach((letter, index) => {
           a_letterData.push({
@@ -69,22 +160,21 @@ export default {
       return a_colors[letter];
     },
 
-    drawCustom() {
-      const canvas = d3.select("#msa-overview-canvas");
-      let context = canvas.node().getContext("2d");
+    drawAlignment() {
+      const canvas = this.$refs["msa-overview-canvas"];
+
+      let context = canvas.getContext("2d");
       context.clearRect(0, 0, this.width, this.height);
 
-      const maxLength = this.getMaxLength(this.seqs);
+      let a_letterData = this.getLetterData();
 
-      let a_letterData = this.getLetterData(this.seqs);
-
-      var letterWholeWidth = this.width / maxLength;
+      var letterWholeWidth = this.width / this.maxLength;
       var letterWidth = (9 * letterWholeWidth) / 10;
 
       var xScale = d3
         .scaleLinear()
         .range([1, this.width])
-        .domain([1, maxLength]);
+        .domain([0, this.maxLength]);
       var yScale = d3
         .scaleLinear()
         .range([10, this.height])
@@ -101,9 +191,63 @@ export default {
         context.fill();
         context.closePath();
       });
+    },
+    mousemove(e) {
+      if (drag) {
+        const div = this.$refs["msa-overview"];
+        this.$set(this.rect, "w", e.pageX - div.offsetLeft - this.rect.startX);
+        this.$set(this.rect, "h", e.pageY - div.offsetTop - this.rect.startY);
+      }
+      this.drawSelection();
+    },
+    mouseup() {
+      drag = false;
+      this.$emit("select", this.rect);
+    },
+    mousedown(e) {
+      const div = this.$refs["msa-overview"];
+      this.$set(this.rect, "startX", e.pageX - div.offsetLeft);
+      this.$set(this.rect, "startY", e.pageY - div.offsetTop);
+      drag = true;
+    },
+    drawSelection() {
+      const canvas = this.$refs["msa-overview-selection"];
+      let context = canvas.getContext("2d");
+
+      this.clearSelection();
+      context.setLineDash([6]);
+      context.fillStyle = "rgba(206, 193, 225, 0.6)";
+      context.strokeStyle = "black";
+      console.log({ rect: this.rect });
+      context.fillRect(
+        this.rect.startX,
+        this.rect.startY,
+        this.rect.w,
+        this.rect.h
+      );
+      context.strokeRect(
+        this.rect.startX,
+        this.rect.startY,
+        this.rect.w,
+        this.rect.h
+      );
+    },
+    clearSelection() {
+      const canvas = this.$refs["msa-overview-selection"];
+      let context = canvas.getContext("2d");
+      context.clearRect(0, 0, this.width, this.height);
     }
   }
 };
 </script>
 
-<style></style>
+<style>
+canvas {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+}
+#msa-overview {
+  position: relative;
+}
+</style>

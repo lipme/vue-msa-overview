@@ -8,7 +8,8 @@
     <br />
     <button @click="generateSequences">Generate Sequences</button>
     <br />
-    <msa-overview :seqs="seqs" />
+    <p>Predefined selection:{{ selection }}</p>
+    <msa-overview :seqs="seqs" :selection="selection" />
   </div>
 </template>
 
@@ -24,7 +25,8 @@ export default {
     return {
       seqs: [],
       nseq: 10,
-      lseq: 100
+      lseq: 10,
+      selection: { startSeq: 3, endSeq: 5, startPos: 2, endPos: 4 }
     };
   },
   created() {},
@@ -36,10 +38,7 @@ export default {
       var l = this.lseq;
 
       var a_seqs = this.randomSequences(nSeqs, l);
-
-      a_seqs.forEach(node => {
-        node.split_seq = node.seq.split("");
-      });
+      console.log({ seqs: a_seqs });
 
       this.seqs = a_seqs;
     },
