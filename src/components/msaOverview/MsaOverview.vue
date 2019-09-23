@@ -89,8 +89,6 @@ export default {
         this.selection.startPos &&
         this.selection.endPos
       ) {
-        console.log("draw predefined selection");
-
         let startSeq =
           this.selection.startSeq < 0 ? 0 : this.selection.startSeq;
 
@@ -202,7 +200,29 @@ export default {
     },
     mouseup() {
       drag = false;
-      this.$emit("select", this.rect);
+      var xScale = d3
+        .scaleLinear()
+        .range([0, this.maxLength])
+        .domain([1, this.width]);
+
+      var yScale = d3
+        .scaleLinear()
+        .range([0, this.seqs.length])
+        .domain([10, this.height]);
+
+      let startSeq = Math.floor(yScale(this.rect.startY));
+      let endSeq = Math.floor(yScale(this.rect.startY + this.rect.h));
+      let startPos = Math.floor(xScale(this.rect.startX));
+      let endPos = Math.floor(xScale(this.rect.startX + this.rect.w));
+
+      let selection = {
+        startSeq: startSeq,
+        endSeq: endSeq,
+        startPos: startPos,
+        endPos: endPos
+      };
+
+      this.$emit("select", selection);
     },
     mousedown(e) {
       const div = this.$refs["msa-overview"];
@@ -218,7 +238,6 @@ export default {
       context.setLineDash([6]);
       context.fillStyle = "rgba(206, 193, 225, 0.6)";
       context.strokeStyle = "black";
-      console.log({ rect: this.rect });
       context.fillRect(
         this.rect.startX,
         this.rect.startY,
