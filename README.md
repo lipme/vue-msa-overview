@@ -2,8 +2,9 @@
 
 ## Version
 
-0.2.0
-Predefined seection
+0.2.1
+Predefined selection
+Emit an event when drawing a selection
 
 ## Synopsis
 

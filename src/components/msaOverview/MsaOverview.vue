@@ -199,9 +199,10 @@ export default {
     },
     mousemove(e) {
       if (drag) {
-        const div = this.$refs["msa-overview"];
-        this.$set(this.rect, "w", e.pageX - div.offsetLeft - this.rect.startX);
-        this.$set(this.rect, "h", e.pageY - div.offsetTop - this.rect.startY);
+        let pos = this.mousePosition(e);
+
+        this.$set(this.rect, "w", pos.x - this.rect.startX);
+        this.$set(this.rect, "h", pos.y - this.rect.startY);
       }
       this.drawSelection();
     },
@@ -232,9 +233,10 @@ export default {
       this.$emit("select", selection);
     },
     mousedown(e) {
-      const div = this.$refs["msa-overview"];
-      this.$set(this.rect, "startX", e.pageX - div.offsetLeft);
-      this.$set(this.rect, "startY", e.pageY - div.offsetTop);
+      let pos = this.mousePosition(e);
+
+      this.$set(this.rect, "startX", pos.x);
+      this.$set(this.rect, "startY", pos.y);
       drag = true;
     },
     drawSelection() {
@@ -262,6 +264,45 @@ export default {
       const canvas = this.$refs["msa-overview-selection"];
       let context = canvas.getContext("2d");
       context.clearRect(0, 0, this.width, this.height);
+    },
+    mousePosition(event) {
+      var totalOffsetX = 0,
+        totalOffsetY = 0,
+        coordX = 0,
+        coordY = 0,
+        currentElement = this.$refs["msa-overview"],
+        mouseX = 0,
+        mouseY = 0;
+
+      // Traversing the parents to get the total offset
+      do {
+        totalOffsetX += currentElement.offsetLeft;
+        totalOffsetY += currentElement.offsetTop;
+      } while ((currentElement = currentElement.offsetParent));
+      // Use pageX to get the mouse coordinates
+      if (event.pageX || event.pageY) {
+        mouseX = event.pageX;
+        mouseY = event.pageY;
+      }
+      // IE8 and below doesn't support event.pageX
+      else if (event.clientX || event.clientY) {
+        mouseX =
+          event.clientX +
+          document.body.scrollLeft +
+          document.documentElement.scrollLeft;
+        mouseY =
+          event.clientY +
+          document.body.scrollTop +
+          document.documentElement.scrollTop;
+      }
+      // Subtract the offset from the mouse coordinates
+      coordX = mouseX - totalOffsetX;
+      coordY = mouseY - totalOffsetY;
+
+      return {
+        x: coordX,
+        y: coordY
+      };
     }
   }
 };
