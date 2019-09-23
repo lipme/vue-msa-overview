@@ -1,8 +1,15 @@
 <template>
   <div id="msa-overview" ref="msa-overview">
-    <canvas ref="msa-overview-canvas" :width="width" :height="height"> </canvas>
+    <canvas
+      ref="msa-overview-canvas"
+      class="draw"
+      :width="width"
+      :height="height"
+    >
+    </canvas>
     <canvas
       ref="msa-overview-selection"
+      class="draw"
       :width="width"
       :height="height"
       @mousedown="mousedown"
@@ -260,8 +267,8 @@ export default {
 };
 </script>
 
-<style>
-canvas {
+<style scoped>
+.draw {
   position: absolute;
   left: 0%;
   top: 0%;

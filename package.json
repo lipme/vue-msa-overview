@@ -1,6 +1,6 @@
 {
     "name": "vue-msa-overview",
-    "version": "0.1.0",
+    "version": "0.2.1",
     "private": false,
     "main": "./dist/msa-overview.common.js",
     "scripts": {

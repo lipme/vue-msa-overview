@@ -2,7 +2,8 @@
 
 ## Version
 
-0.1.0
+0.2.0
+Predefined seection
 
 ## Synopsis
 
@@ -15,9 +16,11 @@ npm install --save vue-msa-overview
 ## usage
 
 ~~~~
-<msa-overview :seqs="seqs">
-
 import { MsaOverview } from 'vue-msa-overview';
+~~~~
+
+~~~~
+<msa-overview :seqs="seqs">
 ~~~~
 
 seqs must be an array of this type :
@@ -27,6 +30,22 @@ seqs must be an array of this type :
     {seq:"ATGC"}
 ]
 ~~~~
+
+With a predefined selection:
+~~~~
+<msa-overview :seqs="seqs" :selection="selection">
+~~~~
+
+selection must be an object of this type :
+~~~~
+{ startSeq: 3, endSeq: 5, startPos: 2, endPos: 4 }
+~~~~
+
+startSeq, endSeq : indices for the sequences
+startPos, endPos : indices for the column
+
+All indices start by 0.
+
 
 ## troubleshootings
 
