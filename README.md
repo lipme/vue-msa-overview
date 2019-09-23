@@ -1,34 +1,37 @@
-# msa-overview
+# vue-msa-overview
 
-## Project setup
-```
-npm install
-```
+## Version
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+0.1.0
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## Synopsis
 
-### Run your tests
-```
-npm run test
-```
+Vue component for displaying an overview of a multiple sequence alignment.
 
-### Lints and fixes files
-```
-npm run lint
-```
+## installation
 
-### Run your unit tests
-```
-npm run test:unit
-```
+npm install --save vue-msa-overview
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## usage
+
+~~~~
+<msa-overview :seqs="seqs">
+
+import { MsaOverview } from 'vue-msa-overview';
+~~~~
+
+seqs must be an array of this type :
+~~~~
+[
+    {seq:"ACGT"},
+    {seq:"ATGC"}
+]
+~~~~
+
+## troubleshootings
+
+Accept only nucleic acids A, C, G, T or U and "."
+
+## contact
+
+ludovic.cottret@inra.fr

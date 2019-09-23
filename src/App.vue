@@ -1,24 +1,79 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    Number of sequences :
+    <input v-model="nseq" type="input" min="2" max="1000" />
+    <br />
+    Alignment length :
+    <input v-model="lseq" type="input" min="10" max="1000" />
+    <br />
+    <button @click="generateSequences">Generate Sequences</button>
+    <br />
+    <msa-overview :seqs="seqs" />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import { MsaOverview } from "./components";
 
 export default {
-  name: 'app',
+  name: "App",
   components: {
-    HelloWorld
+    MsaOverview
+  },
+  data() {
+    return {
+      seqs: [],
+      nseq: 10,
+      lseq: 100
+    };
+  },
+  created() {},
+  methods: {
+    generateSequences() {
+      console.log("generate Sequences");
+
+      var nSeqs = this.nseq;
+      var l = this.lseq;
+
+      var a_seqs = this.randomSequences(nSeqs, l);
+
+      a_seqs.forEach(node => {
+        node.split_seq = node.seq.split("");
+      });
+
+      this.seqs = a_seqs;
+    },
+    randomSequences(n, length) {
+      var a_seqs = [];
+
+      for (let i = 0; i < n; i++) {
+        var seq = "";
+
+        for (let j = 0; j < length; j++) {
+          var letter = this.randomLetter();
+          seq += letter;
+        }
+
+        a_seqs.push({
+          seq: seq,
+          name: "sequence" + i
+        });
+      }
+
+      return a_seqs;
+    },
+    randomLetter() {
+      var a_letters = ["A", "C", "G", "T", "."];
+
+      return a_letters[Math.floor(Math.random() * a_letters.length)];
+    }
   }
-}
+};
 </script>
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
