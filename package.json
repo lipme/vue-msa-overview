@@ -1,7 +1,34 @@
 {
     "name": "vue-msa-overview",
-    "version": "0.2.3",
+    "description": "Vue component for displaying an overview of a multiple sequence alignment",
+    "keywords": ["bioinformatics", "alignment", "vue", "msa"],
+    "version": "0.2.4",
     "private": false,
+    "licence": "Apache-2.0",
+    "author": {
+        "name": "Ludovic Cottret",
+        "email": "ludovic.cottret@inra.fr"
+    },
+    "contributors": [{
+            "name": "Erika Sallet",
+            "email": "erika.sallet@inra.fr"
+        },
+        {
+            "name": "Jérôme Gouzy",
+            "email": "jerome.gouzy@inra.fr"
+        },
+        {
+            "name": "Sébastien Carrere",
+            "email": "sebastien.carrere@inra.fr"
+        },
+        {
+            "name": "Ludovic Legrand",
+            "email": "ludovic.legrand@inra.fr"
+        }
+    ],
+    "bugs": {
+        "email": "ludovic.cottret@inra.fr"
+    },
     "main": "./dist/msa-overview.common.js",
     "scripts": {
         "serve": "vue-cli-service serve",
