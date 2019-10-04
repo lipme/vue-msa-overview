@@ -33,10 +33,10 @@
     "scripts": {
         "serve": "vue-cli-service serve",
         "build": "vue-cli-service build",
-        "build-bundle": "vue-cli-service build --target lib --name msa-overview ./src/components/index.js",
+        "build-npm": "vue-cli-service build --target lib --name msa-overview ./src/components/index.js",
         "lint": "vue-cli-service lint",
         "test:unit": "vue-cli-service test:unit",
-        "publish": "npm publish --access public"
+        "publish-npm": "npm publish --access public"
     },
     "dependencies": {
         "core-js": "^2.6.5",
