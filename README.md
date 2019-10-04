@@ -1,20 +1,14 @@
 # vue-msa-overview
 
-## Version
-
-0.2.1
-Predefined selection
-Emit an event when drawing a selection
-
 ## Synopsis
 
 Vue component for displaying an overview of a multiple sequence alignment.
 
-## installation
+## Installation
 
 npm install --save vue-msa-overview
 
-## usage
+## Usage
 
 ~~~~
 import { MsaOverview } from 'vue-msa-overview';
@@ -47,11 +41,23 @@ startPos, endPos : indices for the column
 
 All indices start by 0.
 
+An event is emitted with the indices of sequences and columns selected by hand.
 
-## troubleshootings
+
+## Troubleshootings
 
 Accept only nucleic acids A, C, G, T or U and "."
 
-## contact
+## Contributors
+[LIPM Bioinfo Team](http://lipm-bioinfo.toulouse.inra.fr/)
+
+ * Ludovic Cottret
+ * Erika Sallet
+ * Sébastien Carrère
+ * Ludovic Legrand
+ * Jérôme Gouzy
+
+
+## Contact
 
 ludovic.cottret@inra.fr

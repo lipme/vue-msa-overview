@@ -162,6 +162,10 @@ export default {
         ".": "grey"
       };
 
+      if (!(letter in a_colors)) {
+        return "grey";
+      }
+
       return a_colors[letter];
     },
 
@@ -173,9 +177,7 @@ export default {
 
       let a_letterData = this.getLetterData();
 
-      var letterWholeWidth = this.width / this.maxLength;
-      var letterWidth = (9 * letterWholeWidth) / 10;
-
+      var letterWidth = this.width / this.maxLength;
       var xScale = d3
         .scaleLinear()
         .range([1, this.width])
@@ -185,9 +187,7 @@ export default {
         .range([10, this.height])
         .domain([0, this.seqs.length]);
 
-      var wholeHeight = this.height / this.seqs.length;
-
-      let height = (9 * wholeHeight) / 10;
+      let height = this.height / this.seqs.length;
 
       a_letterData.forEach(letter => {
         context.beginPath();
