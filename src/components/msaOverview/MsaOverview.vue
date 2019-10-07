@@ -157,8 +157,9 @@ export default {
         A: "red",
         C: "green",
         G: "blue",
-        T: "orange",
-        U: "orange",
+        T: "yellow",
+        U: "yellow",
+        N: "black",
         ".": "grey"
       };
 
