@@ -1,12 +1,13 @@
 <template>
   <div id="msa-overview" ref="msa-overview">
-    <canvas
+    <!-- <canvas
       ref="msa-overview-canvas"
       class="draw"
       :width="width"
       :height="height"
     >
-    </canvas>
+    </canvas> -->
+    <letters-mask :seqs="seqs" :width="width" :height="height"></letters-mask>
     <canvas
       ref="msa-overview-selection"
       class="draw"
@@ -23,10 +24,16 @@
 <script>
 import * as d3 from "d3";
 
+import LettersMask from "@/components/lettersMask/LettersMask.vue";
+
 let drag = false;
 
 export default {
   name: "MsaOverview",
+
+  components: {
+    LettersMask
+  },
 
   props: {
     seqs: {
@@ -69,7 +76,6 @@ export default {
   },
   watch: {
     seqs() {
-      this.drawAlignment();
       this.setSelection();
     },
     selection() {
@@ -77,11 +83,9 @@ export default {
     }
   },
   mounted() {
-    this.drawAlignment();
     this.setSelection();
   },
   updated() {
-    this.drawAlignment();
     this.setSelection();
   },
   methods: {
@@ -132,71 +136,6 @@ export default {
     getMaxLength() {
       let a_lengths = this.seqs.map(seq => seq.seq.length);
       return d3.max(a_lengths);
-    },
-
-    getLetterData() {
-      let a_letterData = [];
-
-      this.seqs.forEach((seq, indexSeq) => {
-        let a_letters = seq.seq.split("");
-
-        a_letters.forEach((letter, index) => {
-          a_letterData.push({
-            x: index,
-            y: indexSeq,
-            color: this.getColor(letter.toUpperCase())
-          });
-        });
-      });
-
-      return a_letterData;
-    },
-
-    getColor(letter) {
-      const a_colors = {
-        A: "red",
-        C: "green",
-        G: "blue",
-        T: "yellow",
-        U: "yellow",
-        N: "black",
-        ".": "grey"
-      };
-
-      if (!(letter in a_colors)) {
-        return "grey";
-      }
-
-      return a_colors[letter];
-    },
-
-    drawAlignment() {
-      const canvas = this.$refs["msa-overview-canvas"];
-
-      let context = canvas.getContext("2d");
-      context.clearRect(0, 0, this.width, this.height);
-
-      let a_letterData = this.getLetterData();
-
-      var letterWidth = this.width / this.maxLength;
-      var xScale = d3
-        .scaleLinear()
-        .range([1, this.width])
-        .domain([0, this.maxLength]);
-      var yScale = d3
-        .scaleLinear()
-        .range([10, this.height])
-        .domain([0, this.seqs.length]);
-
-      let height = this.height / this.seqs.length;
-
-      a_letterData.forEach(letter => {
-        context.beginPath();
-        context.fillStyle = letter.color;
-        context.rect(xScale(letter.x), yScale(letter.y), letterWidth, height);
-        context.fill();
-        context.closePath();
-      });
     },
     mousemove(e) {
       if (drag) {

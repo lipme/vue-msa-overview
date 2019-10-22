@@ -1,2 +1,1 @@
-export { default as MsaOverview }
-from "./msaOverview";
+export { default as MsaOverview } from "./msaOverview";
