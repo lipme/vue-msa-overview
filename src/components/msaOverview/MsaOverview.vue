@@ -1,7 +1,19 @@
 <template>
   <div id="msa-overview" ref="msa-overview">
-    <letters-mask :seqs="seqs" :width="width" :height="height"></letters-mask>
+    <letters-mask
+      v-if="displayLettersMask"
+      :seqs="seqs"
+      :width="width"
+      :height="height"
+    ></letters-mask>
+    <color-sequences-mask
+      v-if="displayMetadataMask"
+      :seqs="seqs"
+      :width="width"
+      :height="height"
+    ></color-sequences-mask>
     <selection-mask
+      v-if="displaySelectionMask"
       :seqs="seqs"
       :width="width"
       :height="height"
@@ -14,13 +26,15 @@
 <script>
 import LettersMask from "@/components/lettersMask/LettersMask.vue";
 import SelectionMask from "@/components/selectionMask/SelectionMask.vue";
+import ColorSequencesMask from "@/components/colorSequencesMask/ColorSequencesMask.vue";
 
 export default {
   name: "MsaOverview",
 
   components: {
     LettersMask,
-    SelectionMask
+    SelectionMask,
+    ColorSequencesMask
   },
 
   props: {
@@ -43,7 +57,10 @@ export default {
       default: () => {
         return null;
       }
-    }
+    },
+    displayLettersMask: { type: Boolean, default: true },
+    displayMetadataMask: { type: Boolean, default: true },
+    displaySelectionMask: { type: Boolean, default: true }
   },
   methods: {
     emitSelect(selection) {
