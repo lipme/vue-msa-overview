@@ -42,11 +42,6 @@ export default {
     this.drawAlignment();
   },
   methods: {
-    getMaxLength() {
-      let a_lengths = this.seqs.map(seq => seq.seq.length);
-      return d3.max(a_lengths);
-    },
-
     getLetterData() {
       let a_letterData = [];
 
