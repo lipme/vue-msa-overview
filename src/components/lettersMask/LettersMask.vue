@@ -22,6 +22,10 @@ export default {
     height: {
       type: Number,
       default: 300
+    },
+    colorStyle: {
+      type: String,
+      default: "nucleotide"
     }
   },
   computed: {
@@ -61,15 +65,20 @@ export default {
     },
 
     getColor(letter) {
-      const a_colors = {
-        A: "red",
-        C: "green",
-        G: "blue",
-        T: "yellow",
-        U: "yellow",
-        N: "black",
-        ".": "grey"
+      const a_allColors = {
+        nucleotide: {
+          A: "green",
+          C: "orange",
+          G: "red",
+          T: "steelblue",
+          U: "steelblue",
+          N: "black",
+          ".": "grey",
+          "-": "grey"
+        }
       };
+
+      const a_colors = a_allColors[this.colorStyle];
 
       if (!(letter in a_colors)) {
         return "grey";
