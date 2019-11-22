@@ -16,8 +16,29 @@
     <br />
     <p>Predefined selection:{{ selection }}</p>
     <p>New selection:{{ newSelection }}</p>
-    <p v-if="hasMetadata">Metadata generated : {{ metadata }}</p>
+    <div v-if="hasMetadata">
+      <button
+        v-for="cat in metadataCategories"
+        :key="cat.label"
+        class="metadata"
+        :style="`background-color:${cat.color}`"
+      >
+        {{ cat.label }}
+      </button>
+    </div>
+
+    <button @click="displayMetadata = !displayMetadata">Toggle metadata</button>
+    <button @click="displaySelection = !displaySelection">
+      Toggle selection
+    </button>
+    <button @click="displayLetters = !displayLetters">
+      Toggle letter colors
+    </button>
+
     <msa-overview
+      :display-letters-mask="displayLetters"
+      :display-metadata-mask="displayMetadata"
+      :display-selection-mask="displaySelection"
       :seqs="seqs"
       :selection="selection"
       @select="setNewSelection"
@@ -40,44 +61,47 @@ export default {
       lseq: 10,
       nmetadata: 0,
       npos: 0,
-      metadata: [],
       selection: { startSeq: 3, endSeq: 5, startPos: 2, endPos: 4 },
-      newSelection: {}
+      newSelection: {},
+      displayMetadata: true,
+      displaySelection: true,
+      displayLetters: true
     };
   },
   computed: {
     hasMetadata() {
-      return this.metadata.length > 0;
+      return this.metadataCategories.length > 0;
+    },
+    metadataCategories() {
+      let a_cats = [];
+
+      for (let i = 0; i < this.nmetadata; i++) {
+        let color = "#" + ((Math.random() * 0xffffff) << 0).toString(16);
+        let label = `metadata${i}`;
+        a_cats.push({ color: color, label: label });
+      }
+
+      return a_cats;
     }
   },
-  created() {},
   methods: {
     generateSequences() {
-      console.log("generate Sequences");
-
       let nSeqs = this.nseq;
       let l = this.lseq;
 
       let a_seqs = this.randomSequences(nSeqs, l);
-      console.log({ seqs: a_seqs });
 
       this.seqs = a_seqs;
 
-      let a_metadatas = this.randomMetadata(
-        this.nmetadata,
-        this.lseq,
-        this.npos
-      );
-
-      this.metadata = a_metadatas;
+      console.log("seqs", a_seqs);
     },
 
-    randomMetadata(n, lengthSequence, nPosMax) {
+    randomMetadata(lengthSequence, nPosMax) {
       let a_metadatas = [];
 
-      for (let i = 0; i < n; i++) {
-        let color = "#" + ((Math.random() * 0xffffff) << 0).toString(16);
-        let label = `metadata${n}`;
+      for (let i = 0; i < this.metadataCategories.length; i++) {
+        let color = this.metadataCategories[i].color;
+        let label = this.metadataCategories[i].label;
         let a_pos = this.randomPositions(lengthSequence, nPosMax);
 
         a_pos.length > 0
@@ -117,7 +141,10 @@ export default {
           seq += letter;
         }
 
+        let a_metadatas = this.randomMetadata(this.lseq, this.npos);
+
         a_seqs.push({
+          metadata: a_metadatas,
           seq: seq,
           name: "sequence" + i
         });
@@ -146,5 +173,14 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+.metadata {
+  width: 100px;
+  float: left;
+  margin: 10px;
+}
+
+#msa-overview {
+  margin: 100px auto 0px auto;
 }
 </style>
