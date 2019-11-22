@@ -2,7 +2,7 @@
     "name": "vue-msa-overview",
     "description": "Vue component for displaying an overview of a multiple sequence alignment",
     "keywords": ["bioinformatics", "alignment", "vue", "msa"],
-    "version": "0.2.7",
+    "version": "0.3.0",
     "private": false,
     "license": "Apache-2.0",
     "author": {
@@ -33,9 +33,9 @@
     "scripts": {
         "serve": "vue-cli-service serve",
         "build": "vue-cli-service build",
-        "build-npm": "vue-cli-service build --target lib --name msa-overview ./src/components/index.js",
         "lint": "vue-cli-service lint",
         "test:unit": "vue-cli-service test:unit",
+        "build-npm": "vue-cli-service build --target lib --name msa-overview ./src/components/index.js",
         "publish-npm": "npm publish --access public"
     },
     "dependencies": {
