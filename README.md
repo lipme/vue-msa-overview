@@ -43,6 +43,32 @@ All indices start by 0.
 
 An event is emitted with the indices of sequences and columns selected by hand.
 
+### Metadata
+
+#### Format
+In the sequence object :
+~~~~
+{seq:"ACGT", metadata:{color:"red", label:"A metadata", positions:[1,2]}}
+~~~~
+
+### Display the different layers
+
+Msa-overview has three layers or masks. Each one is displayed by default
+
+#### Hide letter colors
+~~~~
+<msa-overview :seqs="seqs" :display-letters-mask="false">
+~~~~
+
+#### Hide metadata
+~~~~
+<msa-overview :seqs="seqs" :display-metadata-mask="false">
+~~~~
+
+#### Hide Selection
+~~~~
+<msa-overview :seqs="seqs" :display-selection-mask="false">
+~~~~
 
 ## Troubleshootings
 
