@@ -7,6 +7,7 @@
     @mousedown="mousedown"
     @mouseup="mouseup"
     @mousemove="mousemove"
+    @mouseleave="mouseleave"
   >
   </canvas>
 </template>
@@ -221,6 +222,11 @@ export default {
         x: coordX,
         y: coordY
       };
+    },
+    mouseleave() {
+      if (drag == true) {
+        this.mouseup();
+      }
     }
   }
 };
