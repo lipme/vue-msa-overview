@@ -163,7 +163,7 @@ export default {
 
       this.clearSelection();
       context.setLineDash([6]);
-      context.fillStyle = "rgba(206, 193, 225, 0.6)";
+      context.fillStyle = "rgba(206, 193, 225, 0.15)";
       context.strokeStyle = "black";
       context.fillRect(
         this.rect.startX,
