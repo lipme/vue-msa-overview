@@ -143,11 +143,18 @@ export default {
 
         let a_metadatas = this.randomMetadata(this.lseq, this.npos);
 
-        a_seqs.push({
-          metadata: a_metadatas,
-          seq: seq,
-          name: "sequence" + i
-        });
+        if (a_metadatas.length > 0) {
+          a_seqs.push({
+            metadata: a_metadatas,
+            seq: seq,
+            name: "sequence" + i
+          });
+        } else {
+          a_seqs.push({
+            seq: seq,
+            name: "sequence" + i
+          });
+        }
       }
 
       return a_seqs;
