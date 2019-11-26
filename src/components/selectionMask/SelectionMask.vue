@@ -91,6 +91,12 @@ export default {
             ? this.seqs.length - 1
             : this.selection.endSeq;
 
+        if (startSeq > endSeq) {
+          let tmp = startSeq;
+          startSeq = endSeq;
+          endSeq = tmp;
+        }
+
         let startPos =
           this.selection.startPos < 0 ? 0 : this.selection.startPos;
 
@@ -114,7 +120,6 @@ export default {
         this.$set(this.rect, "h", yScale(endSeq + 1) - this.rect.startY);
         this.$set(this.rect, "w", xScale(endPos + 1) - this.rect.startX);
 
-        console.log({ rect: this.rect });
         this.drawSelection();
       }
     },
@@ -143,6 +148,18 @@ export default {
       let endSeq = Math.floor(yScale(this.rect.startY + this.rect.h));
       let startPos = Math.floor(xScale(this.rect.startX));
       let endPos = Math.floor(xScale(this.rect.startX + this.rect.w));
+
+      if (startSeq > endSeq) {
+        let tmp = startSeq;
+        startSeq = endSeq;
+        endSeq = tmp;
+      }
+
+      if (startPos > endPos) {
+        let tmp = startPos;
+        startPos = endPos;
+        endPos = tmp;
+      }
 
       let selection = {
         startSeq: startSeq,
