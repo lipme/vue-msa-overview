@@ -61,7 +61,7 @@ export default {
       lseq: 10,
       nmetadata: 0,
       npos: 0,
-      selection: { startSeq: 3, endSeq: 5, startPos: 2, endPos: 4 },
+      selection: { startSeq: 1, endSeq: 3, startPos: 2, endPos: 4 },
       newSelection: {},
       displayMetadata: true,
       displaySelection: true,

@@ -78,10 +78,10 @@ export default {
       }
 
       if (
-        this.selection.startSeq &&
-        this.selection.endSeq &&
-        this.selection.startPos &&
-        this.selection.endPos
+        "startSeq" in this.selection &&
+        "endSeq" in this.selection &&
+        "startPos" in this.selection &&
+        "endPos" in this.selection
       ) {
         let startSeq =
           this.selection.startSeq < 0 ? 0 : this.selection.startSeq;
@@ -113,6 +113,8 @@ export default {
 
         this.$set(this.rect, "h", yScale(endSeq + 1) - this.rect.startY);
         this.$set(this.rect, "w", xScale(endPos + 1) - this.rect.startX);
+
+        console.log({ rect: this.rect });
         this.drawSelection();
       }
     },
