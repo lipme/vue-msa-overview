@@ -18,6 +18,7 @@
       :width="width"
       :height="height"
       :selection="selection"
+      :movable="selectable"
       @select="emitSelect"
     ></selection-mask>
   </div>
@@ -38,6 +39,10 @@ export default {
   },
 
   props: {
+    selectable: {
+      type: Boolean,
+      default: true
+    },
     seqs: {
       type: Array,
       default: () => {

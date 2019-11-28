@@ -39,6 +39,10 @@ export default {
       default: () => {
         return null;
       }
+    },
+    movable: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -171,11 +175,13 @@ export default {
       this.$emit("select", selection);
     },
     mousedown(e) {
-      let pos = this.mousePosition(e);
+      if (this.movable) {
+        let pos = this.mousePosition(e);
 
-      this.$set(this.rect, "startX", pos.x);
-      this.$set(this.rect, "startY", pos.y);
-      drag = true;
+        this.$set(this.rect, "startX", pos.x);
+        this.$set(this.rect, "startY", pos.y);
+        drag = true;
+      }
     },
     drawSelection() {
       const canvas = this.$refs["canvas"];

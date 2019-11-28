@@ -35,12 +35,17 @@
       Toggle letter colors
     </button>
 
+    <button @click="selectable = !selectable">
+      Toggle selectable
+    </button>
+
     <msa-overview
       :display-letters-mask="displayLetters"
       :display-metadata-mask="displayMetadata"
       :display-selection-mask="displaySelection"
       :seqs="seqs"
       :selection="selection"
+      :selectable="selectable"
       @select="setNewSelection"
     />
   </div>
@@ -65,7 +70,8 @@ export default {
       newSelection: {},
       displayMetadata: true,
       displaySelection: true,
-      displayLetters: true
+      displayLetters: true,
+      selectable: true
     };
   },
   computed: {
