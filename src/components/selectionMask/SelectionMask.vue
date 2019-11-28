@@ -111,11 +111,11 @@ export default {
 
         var xScale = d3
           .scaleLinear()
-          .range([1, this.width])
+          .range([0, this.width])
           .domain([0, this.maxLength]);
         var yScale = d3
           .scaleLinear()
-          .range([10, this.height])
+          .range([0, this.height])
           .domain([0, this.seqs.length]);
 
         this.$set(this.rect, "startX", xScale(startPos));
@@ -141,12 +141,12 @@ export default {
       var xScale = d3
         .scaleLinear()
         .range([0, this.maxLength])
-        .domain([1, this.width]);
+        .domain([0, this.width]);
 
       var yScale = d3
         .scaleLinear()
         .range([0, this.seqs.length])
-        .domain([10, this.height]);
+        .domain([0, this.height]);
 
       let startSeq = Math.floor(yScale(this.rect.startY));
       let endSeq = Math.floor(yScale(this.rect.startY + this.rect.h));

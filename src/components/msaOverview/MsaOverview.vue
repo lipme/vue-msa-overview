@@ -80,6 +80,9 @@ export default {
   position: absolute;
   left: 0%;
   top: 0%;
+  border-style: solid;
+  border-width: 1px;
+  box-shadow: 5px 5px 2px 1px rgba(50, 50, 51, 0.2);
 }
 #msa-overview {
   position: relative;

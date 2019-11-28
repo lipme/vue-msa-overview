@@ -45,11 +45,11 @@ export default {
     drawMetadata() {
       let xScale = d3
         .scaleLinear()
-        .range([1, this.width])
+        .range([0, this.width])
         .domain([0, this.maxLength]);
       let yScale = d3
         .scaleLinear()
-        .range([10, this.height])
+        .range([0, this.height])
         .domain([0, this.seqs.length]);
 
       this.seqs.forEach((s, seqIndex) => {
@@ -94,11 +94,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.draw {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-}
-</style>

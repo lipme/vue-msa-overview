@@ -73,15 +73,15 @@ export default {
           T: "steelblue",
           U: "steelblue",
           N: "white",
-          ".": "grey",
-          "-": "grey"
+          ".": "white",
+          "-": "white"
         }
       };
 
       const a_colors = a_allColors[this.colorStyle];
 
       if (!(letter in a_colors)) {
-        return "grey";
+        return "white";
       }
 
       return a_colors[letter];
@@ -98,11 +98,11 @@ export default {
       var letterWidth = this.width / this.maxLength;
       var xScale = d3
         .scaleLinear()
-        .range([1, this.width])
+        .range([0, this.width])
         .domain([0, this.maxLength]);
       var yScale = d3
         .scaleLinear()
-        .range([10, this.height])
+        .range([0, this.height])
         .domain([0, this.seqs.length]);
 
       let height = this.height / this.seqs.length;
@@ -118,11 +118,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.draw {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-}
-</style>
