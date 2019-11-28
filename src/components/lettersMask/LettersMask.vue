@@ -72,7 +72,7 @@ export default {
           G: "red",
           T: "steelblue",
           U: "steelblue",
-          N: "black",
+          N: "white",
           ".": "grey",
           "-": "grey"
         }
