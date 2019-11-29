@@ -80,6 +80,8 @@ export default {
     drawRect(o) {
       const canvas = this.$refs["canvas"];
       let context = canvas.getContext("2d");
+      context.globalAlpha = 0.5;
+
       context.beginPath();
       context.fillStyle = o.color;
       context.rect(o.startX, o.startY, o.w, o.h);
