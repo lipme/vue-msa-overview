@@ -55,24 +55,23 @@ export default {
       this.seqs.forEach((s, seqIndex) => {
         if (s.metadata) {
           s.metadata.map(e => {
-            if (!e.positions || e.positions.length == 0) {
-              e.positions = [[0, this.maxLength - 1]];
+            if (e.positions && e.positions.length >= 0) {
+              e.positions.forEach(pos => {
+                let start = pos[0] < 0 ? 0 : pos[0];
+                let end =
+                  pos[1] >= this.maxLength ? this.maxLength - 1 : pos[1];
+
+                let startX = xScale(start);
+                let startY = yScale(seqIndex);
+
+                let h = yScale(seqIndex + 1) - startY;
+                let w = xScale(end + 1) - startX;
+
+                let color = e.color;
+
+                this.drawRect({ startX, startY, h, w, color });
+              });
             }
-
-            e.positions.forEach(pos => {
-              let start = pos[0] < 0 ? 0 : pos[0];
-              let end = pos[1] >= this.maxLength ? this.maxLength - 1 : pos[1];
-
-              let startX = xScale(start);
-              let startY = yScale(seqIndex);
-
-              let h = yScale(seqIndex + 1) - startY;
-              let w = xScale(end + 1) - startX;
-
-              let color = e.color;
-
-              this.drawRect({ startX, startY, h, w, color });
-            });
           });
         }
       });
