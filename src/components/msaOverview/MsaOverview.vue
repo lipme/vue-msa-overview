@@ -21,6 +21,12 @@
       :movable="selectable"
       @select="emitSelect"
     ></selection-mask>
+    <scale-mask
+      class="scaleMask"
+      :seqs="seqs"
+      :width="width"
+      :height="heightMask"
+    ></scale-mask>
   </div>
 </template>
 
@@ -28,6 +34,7 @@
 import LettersMask from "@/components/lettersMask/LettersMask.vue";
 import SelectionMask from "@/components/selectionMask/SelectionMask.vue";
 import ColorSequencesMask from "@/components/colorSequencesMask/ColorSequencesMask.vue";
+import ScaleMask from "@/components/scaleMask/ScaleMask.vue";
 
 export default {
   name: "MsaOverview",
@@ -35,7 +42,8 @@ export default {
   components: {
     LettersMask,
     SelectionMask,
-    ColorSequencesMask
+    ColorSequencesMask,
+    ScaleMask
   },
 
   props: {
@@ -56,6 +64,10 @@ export default {
     height: {
       type: Number,
       default: 300
+    },
+    heightMask: {
+      type: Number,
+      default: 30
     },
     selection: {
       type: Object,
@@ -86,5 +98,13 @@ export default {
 }
 #msa-overview {
   position: relative;
+}
+
+.scaleMask {
+  margin: -35px 0 0 0;
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  border-width: 1px;
 }
 </style>
