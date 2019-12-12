@@ -4,31 +4,12 @@
 
 <script>
 import * as d3 from "d3";
+import { maskMixin } from "@/mixins/maskMixin.js";
 
 export default {
   name: "ColorSequencesMask",
-  props: {
-    seqs: {
-      type: Array,
-      default: () => {
-        return null;
-      }
-    },
-    width: {
-      type: Number,
-      default: 600
-    },
-    height: {
-      type: Number,
-      default: 300
-    }
-  },
-  computed: {
-    maxLength() {
-      let a_lengths = this.seqs.map(seq => seq.seq.length);
-      return d3.max(a_lengths);
-    }
-  },
+  mixins: [maskMixin],
+
   watch: {
     seqs() {
       this.clear();
@@ -43,15 +24,6 @@ export default {
   },
   methods: {
     drawMetadata() {
-      let xScale = d3
-        .scaleLinear()
-        .range([0, this.width])
-        .domain([0, this.maxLength]);
-      let yScale = d3
-        .scaleLinear()
-        .range([0, this.height])
-        .domain([0, this.seqs.length]);
-
       this.seqs.forEach((s, seqIndex) => {
         if (s.metadata) {
           s.metadata.map(e => {
@@ -61,11 +33,11 @@ export default {
                 let end =
                   pos[1] >= this.maxLength ? this.maxLength - 1 : pos[1];
 
-                let startX = xScale(start);
-                let startY = yScale(seqIndex);
+                let startX = this.xScale(start);
+                let startY = this.yScale(seqIndex);
 
-                let h = yScale(seqIndex + 1) - startY;
-                let w = xScale(end + 1) - startX;
+                let h = this.yScale(seqIndex + 1) - startY;
+                let w = this.xScale(end + 1) - startX;
 
                 let color = e.color;
 
