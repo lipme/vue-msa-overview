@@ -14,26 +14,15 @@
 
 <script>
 import * as d3 from "d3";
+import { maskMixin } from "@/mixins/maskMixin.js";
 
 let drag = false;
 
 export default {
   name: "SelectionMask",
+  mixins: [maskMixin],
+
   props: {
-    seqs: {
-      type: Array,
-      default: () => {
-        return null;
-      }
-    },
-    width: {
-      type: Number,
-      default: 600
-    },
-    height: {
-      type: Number,
-      default: 300
-    },
     selection: {
       type: Object,
       default: () => {
@@ -54,12 +43,6 @@ export default {
         }
       }
     };
-  },
-  computed: {
-    maxLength() {
-      let a_lengths = this.seqs.map(seq => seq.seq.length);
-      return d3.max(a_lengths);
-    }
   },
   watch: {
     seqs() {
@@ -109,20 +92,11 @@ export default {
             ? this.maxLength - 1
             : this.selection.endPos;
 
-        var xScale = d3
-          .scaleLinear()
-          .range([0, this.width])
-          .domain([0, this.maxLength]);
-        var yScale = d3
-          .scaleLinear()
-          .range([0, this.height])
-          .domain([0, this.seqs.length]);
+        this.$set(this.rect, "startX", this.xScale(startPos));
+        this.$set(this.rect, "startY", this.yScale(startSeq));
 
-        this.$set(this.rect, "startX", xScale(startPos));
-        this.$set(this.rect, "startY", yScale(startSeq));
-
-        this.$set(this.rect, "h", yScale(endSeq + 1) - this.rect.startY);
-        this.$set(this.rect, "w", xScale(endPos + 1) - this.rect.startX);
+        this.$set(this.rect, "h", this.yScale(endSeq + 1) - this.rect.startY);
+        this.$set(this.rect, "w", this.xScale(endPos + 1) - this.rect.startX);
 
         this.drawSelection();
       }
