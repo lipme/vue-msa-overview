@@ -3,35 +3,16 @@
 </template>
 
 <script>
-import * as d3 from "d3";
+import { maskMixin } from "@/mixins/maskMixin.js";
 
 export default {
   name: "LettersMask",
+  mixins: [maskMixin],
 
   props: {
-    seqs: {
-      type: Array,
-      default: () => {
-        return null;
-      }
-    },
-    width: {
-      type: Number,
-      default: 600
-    },
-    height: {
-      type: Number,
-      default: 300
-    },
     colorStyle: {
       type: String,
       default: "nucleotide"
-    }
-  },
-  computed: {
-    maxLength() {
-      let a_lengths = this.seqs.map(seq => seq.seq.length);
-      return d3.max(a_lengths);
     }
   },
   watch: {
@@ -98,21 +79,18 @@ export default {
       let a_letterData = this.getLetterData();
 
       var letterWidth = this.width / this.maxLength;
-      var xScale = d3
-        .scaleLinear()
-        .range([0, this.width])
-        .domain([0, this.maxLength]);
-      var yScale = d3
-        .scaleLinear()
-        .range([0, this.height])
-        .domain([0, this.seqs.length]);
 
       let height = this.height / this.seqs.length;
 
       a_letterData.forEach(letter => {
         context.beginPath();
         context.fillStyle = letter.color;
-        context.rect(xScale(letter.x), yScale(letter.y), letterWidth, height);
+        context.rect(
+          this.xScale(letter.x),
+          this.yScale(letter.y),
+          letterWidth,
+          height
+        );
         context.fill();
         context.closePath();
       });
