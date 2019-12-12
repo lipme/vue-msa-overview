@@ -61,7 +61,7 @@ export default {
   },
   data() {
     return {
-      seqs: [],
+      seqs: [{ seq: "ACGTGAGCTACTA" }, { seq: "ATTTGAGCTACTT" }],
       nseq: 10,
       lseq: 10,
       nmetadata: 0,

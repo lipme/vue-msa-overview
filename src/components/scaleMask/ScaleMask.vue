@@ -35,21 +35,6 @@ export default {
   },
   watch: {
     seqs() {
-      let a_bins = new Array();
-
-      if (this.seqs != null) {
-        let step = Math.floor(this.maxLength / this.nbBins);
-
-        for (let i = 0; i < this.nbBins; i++) {
-          let pos = step * i;
-          let x = this.xScale(pos);
-          a_bins.push({ x, pos });
-        }
-        let final = { x: this.xScale(this.maxLength) - 2, pos: null };
-        a_bins.push(final);
-      }
-
-      this.bins = a_bins;
       this.draw();
     }
   },
@@ -61,7 +46,46 @@ export default {
     this.draw();
   },
   methods: {
+    createBins() {
+      let a_bins = new Array();
+
+      if (this.seqs != null) {
+        let step = Math.ceil(this.maxLength / this.nbBins);
+
+        for (let i = 0; i < this.nbBins; i++) {
+          let pos = i == 0 ? (pos = null) : step * i;
+          let label = pos;
+          if (this.maxLength > 1000) {
+            let pos5 = this.round(pos, 50);
+            let pos10 = this.round(pos, 100);
+            if (Math.abs(pos - pos5) < Math.abs(pos - pos10)) {
+              label = pos5;
+            } else {
+              label = pos10;
+            }
+          } else if (this.maxLength > 100) {
+            let pos5 = this.round(pos, 5);
+            let pos10 = this.round(pos, 10);
+            if (Math.abs(pos - pos5) < Math.abs(pos - pos10)) {
+              label = pos5;
+            } else {
+              label = pos10;
+            }
+          }
+          let x = this.xScale(pos);
+          a_bins.push({ x, pos: label });
+        }
+        let final = { x: this.xScale(this.maxLength) - 2, pos: null };
+        a_bins.push(final);
+      }
+
+      this.bins = a_bins;
+    },
+    round(x, v) {
+      return Math.ceil(x / v) * v;
+    },
     draw() {
+      this.createBins();
       const canvas = this.$refs["canvas"];
       let context = canvas.getContext("2d");
 
