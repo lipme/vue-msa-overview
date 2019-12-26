@@ -31,7 +31,6 @@ export const maskMixin = {
         .domain([0, this.seqs.length]);
     },
     maxLength() {
-      console.log("recompute length");
       let a_lengths = this.seqs.map(seq => seq.seq.length);
       return d3.max(a_lengths);
     }

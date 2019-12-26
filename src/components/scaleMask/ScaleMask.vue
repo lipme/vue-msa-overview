@@ -31,6 +31,30 @@ export default {
     },
     heightScale() {
       return this.height / 10;
+    },
+    step() {
+      return Math.round(this.closestRoundLength / this.nbBins);
+    },
+    closestRoundLength() {
+      let roundVal = 1;
+      if (this.maxLength > 10000) {
+        roundVal = 10000;
+      } else if (this.maxLength > 1000) {
+        roundVal = 1000;
+      } else if (this.maxLength > 100) {
+        roundVal = 100;
+      } else if (this.maxLength > 10) {
+        roundVal = 10;
+      }
+
+      return this.closest(this.maxLength, roundVal);
+    },
+    actualNbBins() {
+      let remain = this.maxLength - this.closestRoundLength;
+
+      let remainBins = Math.round(remain / this.step);
+
+      return this.nbBins + remainBins;
     }
   },
   watch: {
@@ -50,28 +74,9 @@ export default {
       let a_bins = new Array();
 
       if (this.seqs != null) {
-        let step = Math.ceil(this.maxLength / this.nbBins);
-
-        for (let i = 0; i < this.nbBins; i++) {
-          let pos = i == 0 ? (pos = null) : step * i;
+        for (let i = 0; i < this.actualNbBins; i++) {
+          let pos = i == 0 ? (pos = null) : this.step * i;
           let label = pos;
-          if (this.maxLength > 1000) {
-            let pos5 = this.round(pos, 50);
-            let pos10 = this.round(pos, 100);
-            if (Math.abs(pos - pos5) < Math.abs(pos - pos10)) {
-              label = pos5;
-            } else {
-              label = pos10;
-            }
-          } else if (this.maxLength > 100) {
-            let pos5 = this.round(pos, 5);
-            let pos10 = this.round(pos, 10);
-            if (Math.abs(pos - pos5) < Math.abs(pos - pos10)) {
-              label = pos5;
-            } else {
-              label = pos10;
-            }
-          }
           let x = this.xScale(pos);
           a_bins.push({ x, pos: label });
         }
@@ -81,8 +86,8 @@ export default {
 
       this.bins = a_bins;
     },
-    round(x, v) {
-      return Math.ceil(x / v) * v;
+    closest(x, v) {
+      return Math.floor(x / v) * v;
     },
     draw() {
       this.createBins();
@@ -105,7 +110,7 @@ export default {
         if (bin.pos != null) {
           context.fillText(
             bin.pos,
-            bin.x,
+            bin.x - 10,
             this.positionScale - this.heightTick - 2
           );
         }
