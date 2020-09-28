@@ -1,5 +1,20 @@
 <template>
-  <canvas ref="canvas" :width="width" :height="height"></canvas>
+  <div
+    ref="draw"
+    :style="`position:relative;height:${height}px;width:${width}px;`"
+  >
+    <div
+      v-for="rect in rects"
+      :id="rect.id"
+      :key="rect.id"
+      :style="
+        `position:absolute;height:${rect.height}px;width:${rect.width}px;top:${
+          rect.startY
+        }px;left:${rect.startX}px;background-color:${rect.color}`
+      "
+      :title="rect.title"
+    ></div>
+  </div>
 </template>
 
 <script>
@@ -41,31 +56,16 @@ export default {
         .scaleLinear()
         .range([0, this.height])
         .domain([0, this.tracks.length]);
-    }
-  },
-  watch: {
-    tracks() {
-      this.draw();
-    }
-  },
-  mounted() {
-    this.draw();
-  },
-  updated() {
-    this.draw();
-  },
-  methods: {
-    randomColor() {
-      return "#" + ((Math.random() * 0xffffff) << 0).toString(16);
     },
-    draw() {
-      this.clear();
+    rects() {
+      let rects = [];
+      let i = 0;
       this.tracks.forEach((track, trackIndex) => {
         if (track.features) {
           track.features.map(feature => {
             if (feature.positions) {
               feature.positions.forEach(pos => {
-                let start = pos[0] < 0 ? 0 : pos[0] - 1;
+                let start = pos[0] < 1 ? 0 : pos[0] - 1;
                 let end =
                   pos[1] >= this.maxLength ? this.maxLength - 1 : pos[1] - 1;
 
@@ -77,28 +77,30 @@ export default {
                 let w = this.xScale(end + 1) - startX;
 
                 let color = feature.color ? feature.color : this.randomColor();
-                this.drawRect({ startX, startY, h, w, color });
+                let title = `${feature.type}(${pos[0]}-${pos[1]})`;
+
+                i++;
+                const rect = {
+                  startX: startX,
+                  startY: startY,
+                  height: h,
+                  width: w,
+                  color: color,
+                  title: title,
+                  id: `rect${i}`
+                };
+                rects.push(rect);
               });
             }
           });
         }
       });
-    },
-    drawRect(o) {
-      const canvas = this.$refs["canvas"];
-      let context = canvas.getContext("2d");
-      context.globalAlpha = 0.5;
-
-      context.beginPath();
-      context.fillStyle = o.color;
-      context.rect(o.startX, o.startY, o.w, o.h);
-      context.fill();
-      context.closePath();
-    },
-    clear() {
-      const canvas = this.$refs["canvas"];
-      let context = canvas.getContext("2d");
-      context.clearRect(0, 0, canvas.width, canvas.height);
+      return rects;
+    }
+  },
+  methods: {
+    randomColor() {
+      return "#" + ((Math.random() * 0xffffff) << 0).toString(16);
     }
   }
 };

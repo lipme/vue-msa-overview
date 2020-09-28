@@ -116,7 +116,7 @@ export default {
         let features = [];
         for (let j = 1; j <= this.nFeatures; j++) {
           let feature = {
-            positions: this.randomPositions(this.lseq, 1),
+            positions: this.randomPositions(this.lseq + 1, 1),
             type: `track${i}-feat${j}`,
             color: this.randomColor()
           };

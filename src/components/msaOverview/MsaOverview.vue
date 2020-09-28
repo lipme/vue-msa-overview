@@ -17,7 +17,7 @@
       :width="width"
       :height="heightScale"
     ></scale-mask>
-    <div :style="`position:relative;top:${positionMasks}px;`">
+    <div :style="`position:absolute;top:${positionMasks}px;`">
       <letters-mask
         v-if="displayLettersMask"
         :seqs="seqs"
