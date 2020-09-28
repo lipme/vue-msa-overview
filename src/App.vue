@@ -129,7 +129,12 @@ export default {
   },
   methods: {
     randomColor() {
-      return "#" + ((Math.random() * 0xffffff) << 0).toString(16);
+      var letters = "0123456789ABCDEF";
+      var color = "#";
+      for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
     },
     generateSequences() {
       let nSeqs = this.nseq;

@@ -108,9 +108,10 @@ export default {
         context.fill();
         context.closePath();
         if (bin.pos != null) {
+          console.log({ pos: bin.pos });
           context.fillText(
             bin.pos,
-            bin.x - 10,
+            bin.x - ("" + bin.pos).length * 3,
             this.positionScale - this.heightTick - 2
           );
         }
