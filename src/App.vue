@@ -14,6 +14,12 @@
     <br />
     <button @click="generateSequences">Generate Sequences</button>
     <br />
+    Number of tracks to display:
+    <input v-model="nTracks" type="input" min="0" max="10" />
+    <br />
+    Max Number of features in tracks:
+    <input v-model="nFeatures" type="input" min="0" max="3" />
+    <br />
     <p>Predefined selection:{{ selection }}</p>
     <p>New selection:{{ newSelection }}</p>
     <div v-if="hasMetadata">
@@ -39,13 +45,24 @@
       Toggle selectable
     </button>
 
+    <button @click="displayTracks = !displayTracks">
+      Toggle tracks
+    </button>
+
+    <button @click="displayScale = !displayScale">
+      Toggle scales
+    </button>
+
     <msa-overview
       :display-letters-mask="displayLetters"
       :display-metadata-mask="displayMetadata"
       :display-selection-mask="displaySelection"
+      :display-tracks="displayTracks"
+      :display-scale="displayScale"
       :seqs="seqs"
       :selection="selection"
       :selectable="selectable"
+      :tracks="tracks"
       @select="setNewSelection"
     />
   </div>
@@ -61,7 +78,7 @@ export default {
   },
   data() {
     return {
-      seqs: [{ seq: "ACGTGAGCTACTA" }, { seq: "ATTTGAGCTACTT" }],
+      seqs: [{ seq: "ACGTGAGCTA" }, { seq: "ATTTGAGCTA" }],
       nseq: 10,
       lseq: 10,
       nmetadata: 0,
@@ -71,7 +88,11 @@ export default {
       displayMetadata: true,
       displaySelection: true,
       displayLetters: true,
-      selectable: true
+      displayTracks: true,
+      displayScale: true,
+      selectable: true,
+      nTracks: 2,
+      nFeatures: 1
     };
   },
   computed: {
@@ -82,15 +103,34 @@ export default {
       let a_cats = [];
 
       for (let i = 0; i < this.nmetadata; i++) {
-        let color = "#" + ((Math.random() * 0xffffff) << 0).toString(16);
+        let color = this.randomColor();
         let label = `metadata${i}`;
         a_cats.push({ color: color, label: label });
       }
 
       return a_cats;
+    },
+    tracks() {
+      let tracks = [];
+      for (let i = 1; i <= this.nTracks; i++) {
+        let features = [];
+        for (let j = 1; j <= this.nFeatures; j++) {
+          let feature = {
+            positions: this.randomPositions(this.lseq, 1),
+            type: `track${i}-feat${j}`,
+            color: this.randomColor()
+          };
+          features.push(feature);
+        }
+        tracks.push({ trackLabel: `track${i}`, features: features });
+      }
+      return tracks;
     }
   },
   methods: {
+    randomColor() {
+      return "#" + ((Math.random() * 0xffffff) << 0).toString(16);
+    },
     generateSequences() {
       let nSeqs = this.nseq;
       let l = this.lseq;
@@ -98,8 +138,6 @@ export default {
       let a_seqs = this.randomSequences(nSeqs, l);
 
       this.seqs = a_seqs;
-
-      console.log("seqs", a_seqs);
     },
 
     randomMetadata(lengthSequence, nPosMax) {
@@ -121,9 +159,7 @@ export default {
     randomPositions(lengthSequence, nMax) {
       let a_pos = [];
 
-      let n = Math.floor(Math.random() * nMax);
-
-      for (let i = 0; i < n; i++) {
+      for (let i = 0; i < nMax; i++) {
         let start = Math.floor(Math.random() * lengthSequence);
         let nb = Math.floor(Math.random() * (lengthSequence - start));
         let end = start + nb;
@@ -194,6 +230,6 @@ export default {
 }
 
 #msa-overview {
-  margin: 100px auto 0px auto;
+  margin: 50px auto 0px auto;
 }
 </style>

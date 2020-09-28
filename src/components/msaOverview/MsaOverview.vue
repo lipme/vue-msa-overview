@@ -1,32 +1,45 @@
 <template>
-  <div id="msa-overview" ref="msa-overview">
-    <letters-mask
-      v-if="displayLettersMask"
-      :seqs="seqs"
+  <div id="msa-overview" ref="msa-overview" :style="`height:${height}px`">
+    <tracks
+      v-if="displayTracks && tracks.length > 0"
+      class="tracks"
+      :tracks="tracks"
+      :max-length="maxLength"
       :width="width"
-      :height="height"
-    ></letters-mask>
-    <color-sequences-mask
-      v-if="displayMetadataMask"
-      :seqs="seqs"
-      :width="width"
-      :height="height"
-    ></color-sequences-mask>
-    <selection-mask
-      v-if="displaySelectionMask"
-      :seqs="seqs"
-      :width="width"
-      :height="height"
-      :selection="selection"
-      :movable="selectable"
-      @select="emitSelect"
-    ></selection-mask>
+      :height="heightTracks"
+      :display-labels="false"
+    ></tracks>
     <scale-mask
+      v-if="displayScale"
+      :style="`top:${positionScale}px;`"
       class="scaleMask"
       :seqs="seqs"
       :width="width"
-      :height="heightMask"
+      :height="heightScale"
     ></scale-mask>
+    <div :style="`position:relative;top:${positionMasks}px;`">
+      <letters-mask
+        v-if="displayLettersMask"
+        :seqs="seqs"
+        :width="width"
+        :height="heightMask"
+      ></letters-mask>
+      <color-sequences-mask
+        v-if="displayMetadataMask"
+        :seqs="seqs"
+        :width="width"
+        :height="heightMask"
+      ></color-sequences-mask>
+      <selection-mask
+        v-if="displaySelectionMask"
+        :seqs="seqs"
+        :width="width"
+        :height="heightMask"
+        :selection="selection"
+        :movable="selectable"
+        @select="emitSelect"
+      ></selection-mask>
+    </div>
   </div>
 </template>
 
@@ -36,6 +49,8 @@ import SelectionMask from "@/components/selectionMask/SelectionMask.vue";
 import ColorSequencesMask from "@/components/colorSequencesMask/ColorSequencesMask.vue";
 import ScaleMask from "@/components/scaleMask/ScaleMask.vue";
 
+import Tracks from "@/components/tracks";
+
 export default {
   name: "MsaOverview",
 
@@ -43,7 +58,8 @@ export default {
     LettersMask,
     SelectionMask,
     ColorSequencesMask,
-    ScaleMask
+    ScaleMask,
+    Tracks
   },
 
   props: {
@@ -65,7 +81,7 @@ export default {
       type: Number,
       default: 300
     },
-    heightMask: {
+    heightScale: {
       type: Number,
       default: 30
     },
@@ -75,9 +91,48 @@ export default {
         return null;
       }
     },
+    tracks: {
+      type: Array,
+      default: () => []
+    },
+    heightTracks: {
+      type: Number,
+      default: 50
+    },
     displayLettersMask: { type: Boolean, default: true },
     displayMetadataMask: { type: Boolean, default: true },
-    displaySelectionMask: { type: Boolean, default: true }
+    displaySelectionMask: { type: Boolean, default: true },
+    displayTracks: { type: Boolean, default: true },
+    displayScale: { type: Boolean, default: true }
+  },
+  computed: {
+    maxLength() {
+      return Math.max(...this.seqs.map(s => s.seq.length));
+    },
+    heightMask() {
+      return (
+        this.height -
+        (this.displayScale ? this.heightScale : 0) -
+        (this.displayTracks ? this.heightTracks : 0)
+      );
+    },
+    positionMasks() {
+      let pos = 5;
+      if (this.displayTracks && this.tracks.length > 0) {
+        pos += this.heightTracks;
+      }
+      if (this.displayScale) {
+        pos += this.heightScale;
+      }
+      return pos;
+    },
+    positionScale() {
+      let pos = 0;
+      if (this.displayTracks && this.tracks.length > 0) {
+        pos += this.heightTracks;
+      }
+      return pos;
+    }
   },
   methods: {
     emitSelect(selection) {
@@ -101,10 +156,16 @@ export default {
 }
 
 .scaleMask {
-  margin: -35px 0 0 0;
   position: absolute;
   left: 0%;
   top: 0%;
   border-width: 1px;
+}
+
+.tracks {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  margin: 0px 0px 5px 0px;
 }
 </style>
