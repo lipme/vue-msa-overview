@@ -61,6 +61,7 @@ export default {
       let rects = [];
       let i = 0;
       this.tracks.forEach((track, trackIndex) => {
+        const trackLabel = track.trackLabel;
         if (track.features) {
           track.features.map(feature => {
             if (feature.positions) {
@@ -77,7 +78,9 @@ export default {
                 let w = this.xScale(end + 1) - startX;
 
                 let color = feature.color ? feature.color : this.randomColor();
-                let title = `${feature.type}(${pos[0]}-${pos[1]})`;
+                let title = `${trackLabel}-${feature.type}(${pos[0]}:${
+                  pos[1]
+                })`;
 
                 i++;
                 const rect = {

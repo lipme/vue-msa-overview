@@ -108,7 +108,6 @@ export default {
         context.fill();
         context.closePath();
         if (bin.pos != null) {
-          console.log({ pos: bin.pos });
           context.fillText(
             bin.pos,
             bin.x - ("" + bin.pos).length * 3,
