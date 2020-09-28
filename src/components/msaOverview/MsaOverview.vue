@@ -23,6 +23,7 @@
         :seqs="seqs"
         :width="width"
         :height="heightMask"
+        :color-style="colorStyle"
       ></letters-mask>
       <color-sequences-mask
         v-if="displayMetadataMask"
@@ -98,6 +99,13 @@ export default {
     heightTracks: {
       type: Number,
       default: 50
+    },
+    colorStyle: {
+      type: String,
+      default: "nt",
+      validator: function(value) {
+        return ["nt", "aa"].indexOf(value) !== -1;
+      }
     },
     displayLettersMask: { type: Boolean, default: true },
     displayMetadataMask: { type: Boolean, default: true },

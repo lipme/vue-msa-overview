@@ -12,7 +12,6 @@
     Number of maximum metadata positions (start, end) to display
     <input v-model="npos" type="input" min="0" max="5" />
     <br />
-    <button @click="generateSequences">Generate Sequences</button>
     <br />
     Number of tracks to display:
     <input v-model="nTracks" type="input" min="0" max="10" />
@@ -20,6 +19,8 @@
     Max Number of features in tracks:
     <input v-model="nFeatures" type="input" min="0" max="3" />
     <br />
+    <button @click="generateSequences">Generate Sequences</button>
+
     <p>Predefined selection:{{ selection }}</p>
     <p>New selection:{{ newSelection }}</p>
     <div v-if="hasMetadata">
@@ -53,6 +54,11 @@
       Toggle scales
     </button>
 
+    <br />
+    Color Styles
+    <input v-model="style" type="radio" value="nt" checked />
+    <input v-model="style" type="radio" value="aa" />
+
     <msa-overview
       :display-letters-mask="displayLetters"
       :display-metadata-mask="displayMetadata"
@@ -63,6 +69,7 @@
       :selection="selection"
       :selectable="selectable"
       :tracks="tracks"
+      :color-style="style"
       @select="setNewSelection"
     />
   </div>
@@ -92,7 +99,8 @@ export default {
       displayScale: true,
       selectable: true,
       nTracks: 2,
-      nFeatures: 1
+      nFeatures: 1,
+      style: "nt"
     };
   },
   computed: {
@@ -116,7 +124,7 @@ export default {
         let features = [];
         for (let j = 1; j <= this.nFeatures; j++) {
           let feature = {
-            positions: this.randomPositions(this.lseq + 1, 1),
+            positions: this.randomPositions(Number(this.lseq) + 1, 1),
             type: `feat${j}`,
             color: this.randomColor()
           };

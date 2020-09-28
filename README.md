@@ -26,7 +26,19 @@ seqs must be an array of this type :
 ]
 ~~~~
 
-With a predefined selection:
+### Letter colors
+
+By default, letters are colored according to the color code of Clustal for nucleotides. This is equivalent to:
+~~~~
+<msa-overview :seqs="seqs" :color-style="nt">
+~~~~
+To color according to amino acids:
+~~~~
+<msa-overview :seqs="seqs" :color-style="aa">
+~~~~
+
+
+### With a predefined selection
 ~~~~
 <msa-overview :seqs="seqs" :selection="selection">
 ~~~~

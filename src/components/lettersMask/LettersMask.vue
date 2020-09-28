@@ -12,11 +12,83 @@ export default {
   props: {
     colorStyle: {
       type: String,
-      default: "nucleotide"
+      default: "nt"
+    }
+  },
+  computed: {
+    lettersData() {
+      let a_letterData = [];
+
+      this.seqs.forEach((seq, indexSeq) => {
+        let a_letters = seq.seq.split("");
+
+        a_letters.forEach((letter, index) => {
+          let color = "white";
+          if (letter in this.colors) {
+            color = this.colors[letter];
+          }
+
+          a_letterData.push({
+            x: index,
+            y: indexSeq,
+            color: color
+          });
+        });
+      });
+
+      return a_letterData;
+    },
+    colors() {
+      const a_allColors = {
+        nt: {
+          A: "green",
+          C: "orange",
+          G: "red",
+          T: "steelblue",
+          U: "steelblue",
+          N: "white",
+          ".": "white",
+          "-": "white"
+        },
+        // Clustal colors found in
+        // http://www.jalview.org/help/html/colourSchemes/index.html
+        aa: {
+          A: "#80a0f0",
+          R: "#f01505",
+          N: "#00ff00",
+          D: "#c048c0",
+          C: "#f08080",
+          Q: "#00ff00",
+          E: "#c048c0",
+          G: "#f09048",
+          H: "#15a4a4",
+          I: "#80a0f0",
+          L: "#80a0f0",
+          K: "#f01505",
+          M: "#80a0f0",
+          F: "#80a0f0",
+          P: "#ffff00",
+          S: "#00ff00",
+          T: "#00ff00",
+          W: "#80a0f0",
+          Y: "#15a4a4",
+          V: "#80a0f0",
+          ".": "white",
+          "-": "white",
+          B: "grey",
+          X: "grey",
+          Z: "grey"
+        }
+      };
+
+      return a_allColors[this.colorStyle];
     }
   },
   watch: {
     seqs() {
+      this.drawAlignment();
+    },
+    colorStyle() {
       this.drawAlignment();
     }
   },
@@ -27,45 +99,12 @@ export default {
     this.drawAlignment();
   },
   methods: {
-    getLetterData() {
-      let a_letterData = [];
-
-      this.seqs.forEach((seq, indexSeq) => {
-        let a_letters = seq.seq.split("");
-
-        a_letters.forEach((letter, index) => {
-          a_letterData.push({
-            x: index,
-            y: indexSeq,
-            color: this.getColor(letter.toUpperCase())
-          });
-        });
-      });
-
-      return a_letterData;
-    },
-
     getColor(letter) {
-      const a_allColors = {
-        nucleotide: {
-          A: "green",
-          C: "orange",
-          G: "red",
-          T: "steelblue",
-          U: "steelblue",
-          N: "white",
-          ".": "white",
-          "-": "white"
-        }
-      };
-
-      const a_colors = a_allColors[this.colorStyle];
-
-      if (!(letter in a_colors)) {
+      if (!(letter in this.colors)) {
         return "white";
       }
 
-      return a_colors[letter];
+      return this.colors[letter];
     },
 
     drawAlignment() {
@@ -76,7 +115,7 @@ export default {
 
       context.clearRect(0, 0, this.width, this.height);
 
-      let a_letterData = this.getLetterData();
+      let a_letterData = this.lettersData;
 
       var letterWidth = this.width / this.maxLength;
 
