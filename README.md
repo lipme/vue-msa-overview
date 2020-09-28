@@ -70,6 +70,67 @@ Msa-overview has three layers or masks. Each one is displayed by default
 <msa-overview :seqs="seqs" :display-selection-mask="false">
 ~~~~
 
+### Display tracks
+
+vue-msa-overview allows to display tracks above the alignment.
+Be careful, the positions are 1-based and not 0-based.
+
+~~~~
+<msa-overview :seqs="seqs" :tracks="tracks">
+~~~~
+
+You have to respect this format (example):
+
+~~~~
+tracks: [
+        {
+          features: [
+            {
+              positions: [
+                [1, 20],
+                [109, 234]
+              ],
+              type: 'label1',
+              color: 'green'
+            },
+            {
+              positions: [[21, 108]],
+              type: 'label2',
+              color: 'pink'
+            }
+          ],
+          trackLabel: 'track1'
+        },
+        {
+          features: [
+            {
+              positions: [
+                [5, 15],
+                [109, 234]
+              ],
+              type: 'label1',
+              color: 'blue'
+            },
+            {
+              positions: [
+                [50, 65],
+                [16, 20]
+              ],
+              type: 'label2',
+              color: 'red'
+            }
+          ],
+          trackLabel: 'track2'
+        }
+      ]
+~~~~
+
+If you want to hide tracks: 
+
+~~~~
+<msa-overview :seqs="seqs" :tracks="tracks" :display-tracks="false">
+~~~~
+
 ## Troubleshootings
 
 Accept only nucleic acids A, C, G, T or U and "."
