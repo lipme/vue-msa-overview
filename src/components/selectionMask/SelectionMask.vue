@@ -32,6 +32,10 @@ export default {
     movable: {
       type: Boolean,
       default: true
+    },
+    maxSelection: {
+      type: Number,
+      default: 2
     }
   },
   data() {

@@ -58,10 +58,49 @@ An event is emitted with the indices of sequences and columns selected by hand.
 ### Metadata
 
 #### Format
-In the sequence object :
 ~~~~
-{seq:"ACGT", metadata:{color:"red", label:"A metadata", positions:[1,2]}}
+<msa-overview :seqs="seqs" :metadata="metadata">
 ~~~~
+
+~~~
+metadata :[
+  {
+    label: "Metadata 1",
+    categories : [
+      {
+        label: "cat 1",
+        style: {fill: 'red'},
+        regions: 
+        [
+          {
+            id:"seq1",
+            ranges: [[4,10], [14,25]]
+          },
+          {
+            id:"seq2",
+            ranges: [[3,10], [14,25]]
+          }
+        ]
+      },
+      {
+        label: "cat 2",
+        style: {fill: 'green'},
+        regions: 
+        [
+          {
+            id:"seq1",
+            ranges: [[10,13], [26,50]]
+          },
+          {
+            id:"seq2",
+            ranges: [[11, 13]]
+          }
+        ]
+      }
+    ]
+  },
+]
+~~~
 
 ### Display the different layers
 

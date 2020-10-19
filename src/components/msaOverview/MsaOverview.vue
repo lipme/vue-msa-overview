@@ -27,7 +27,7 @@
       ></letters-mask>
       <color-sequences-mask
         v-if="displayMetadataMask"
-        :seqs="seqs"
+        :seqs="computedSeqs"
         :width="width"
         :height="heightMask"
       ></color-sequences-mask>
@@ -51,6 +51,8 @@ import ColorSequencesMask from "@/components/colorSequencesMask/ColorSequencesMa
 import ScaleMask from "@/components/scaleMask/ScaleMask.vue";
 
 import Tracks from "@/components/tracks";
+
+import _ from "lodash";
 
 export default {
   name: "MsaOverview",
@@ -107,6 +109,10 @@ export default {
         return ["nt", "aa"].indexOf(value) !== -1;
       }
     },
+    metadata: {
+      type: Array,
+      default: () => []
+    },
     displayLettersMask: { type: Boolean, default: true },
     displayMetadataMask: { type: Boolean, default: true },
     displaySelectionMask: { type: Boolean, default: true },
@@ -140,6 +146,46 @@ export default {
         pos += this.heightTracks;
       }
       return pos;
+    },
+    computedSeqs() {
+      let seqs;
+      if (this.metadata && this.metadata.length > 0) {
+        seqs = _.cloneDeep(this.seqs);
+
+        this.metadata.forEach(m => {
+          if ("categories" in m) {
+            const categories = m.categories;
+            categories.forEach(cat => {
+              if ("regions" in cat) {
+                const regions = cat.regions;
+                const style = cat.style;
+
+                regions.forEach(r => {
+                  const seqId = r.id;
+
+                  const seq = seqs.find(s => s.id === seqId);
+
+                  if (!("metadata" in seq)) {
+                    seq.metadata = [];
+                  }
+
+                  let metadata = {
+                    positions: r.ranges,
+                    color: style.fill,
+                    label: cat.label
+                  };
+
+                  seq.metadata.push(metadata);
+                });
+              }
+            });
+          }
+        });
+      } else {
+        seqs = this.seqs;
+      }
+
+      return seqs;
     }
   },
   methods: {

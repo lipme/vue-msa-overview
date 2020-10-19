@@ -19,7 +19,6 @@
     Max Number of features in tracks:
     <input v-model="nFeatures" type="input" min="0" max="3" />
     <br />
-    <button @click="generateSequences">Generate Sequences</button>
 
     <p>Predefined selection:{{ selection }}</p>
     <p>New selection:{{ newSelection }}</p>
@@ -70,6 +69,7 @@
       :selectable="selectable"
       :tracks="tracks"
       :color-style="style"
+      :metadata="metadata"
       @select="setNewSelection"
     />
   </div>
@@ -85,11 +85,10 @@ export default {
   },
   data() {
     return {
-      seqs: [{ seq: "ACGTGAGCTA" }, { seq: "ATTTGAGCTA" }],
       nseq: 10,
       lseq: 10,
-      nmetadata: 0,
-      npos: 0,
+      nmetadata: 2,
+      npos: 2,
       selection: { startSeq: 1, endSeq: 3, startPos: 2, endPos: 4 },
       newSelection: {},
       displayMetadata: true,
@@ -133,6 +132,45 @@ export default {
         tracks.push({ trackLabel: `track${i}`, features: features });
       }
       return tracks;
+    },
+    metadata() {
+      let categories = [];
+
+      this.metadataCategories.forEach(c => {
+        let regions = [];
+        for (let index = 0; index < this.seqs.length; index++) {
+          const seq = this.seqs[index];
+          let region = {
+            id: seq.id,
+            ranges: this.randomPositions(this.nseq, this.npos)
+          };
+          regions.push(region);
+        }
+        const category = {
+          label: c.label,
+          style: { fill: c.color },
+          regions: regions
+        };
+        categories.push(category);
+      });
+
+      let metadata = {};
+      let metadatas = [];
+
+      if (categories.length > 0) {
+        metadata.categories = categories;
+        metadatas.push(metadata);
+      }
+
+      return metadatas;
+    },
+    seqs() {
+      let nSeqs = this.nseq;
+      let l = this.lseq;
+
+      let a_seqs = this.randomSequences(nSeqs, l);
+
+      return a_seqs;
     }
   },
   methods: {
@@ -151,22 +189,6 @@ export default {
       let a_seqs = this.randomSequences(nSeqs, l);
 
       this.seqs = a_seqs;
-    },
-
-    randomMetadata(lengthSequence, nPosMax) {
-      let a_metadatas = [];
-
-      for (let i = 0; i < this.metadataCategories.length; i++) {
-        let color = this.metadataCategories[i].color;
-        let label = this.metadataCategories[i].label;
-        let a_pos = this.randomPositions(lengthSequence, nPosMax);
-
-        a_pos.length > 0
-          ? a_metadatas.push({ color: color, label: label, positions: a_pos })
-          : a_metadatas.push({ color: color, label: label });
-      }
-
-      return a_metadatas;
     },
 
     randomPositions(lengthSequence, nMax) {
@@ -196,20 +218,10 @@ export default {
           seq += letter;
         }
 
-        let a_metadatas = this.randomMetadata(this.lseq, this.npos);
-
-        if (a_metadatas.length > 0) {
-          a_seqs.push({
-            metadata: a_metadatas,
-            seq: seq,
-            name: "sequence" + i
-          });
-        } else {
-          a_seqs.push({
-            seq: seq,
-            name: "sequence" + i
-          });
-        }
+        a_seqs.push({
+          seq: seq,
+          id: "sequence" + i
+        });
       }
 
       return a_seqs;
