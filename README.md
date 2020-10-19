@@ -102,6 +102,8 @@ metadata :[
 ]
 ~~~
 
+id:'_all' will apply the metadata on all the sequences.
+
 ### Display the different layers
 
 Msa-overview has three layers or masks. Each one is displayed by default

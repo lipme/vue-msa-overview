@@ -163,19 +163,37 @@ export default {
                 regions.forEach(r => {
                   const seqId = r.id;
 
-                  const seq = seqs.find(s => s.id === seqId);
+                  let correspondingSeqs;
 
-                  if (!("metadata" in seq)) {
-                    seq.metadata = [];
+                  if (seqId === "_all") {
+                    correspondingSeqs = seqs;
+                  } else {
+                    const correspondingSeq = seqs.find(s => s.id === seqId);
+                    if (!correspondingSeq) {
+                      console.error(
+                        "[MSA overview] error in metadata, no sequence " + seqId
+                      );
+                    } else {
+                      correspondingSeqs = [correspondingSeq];
+                    }
                   }
 
-                  let metadata = {
-                    positions: r.ranges,
-                    color: style.fill,
-                    label: cat.label
-                  };
+                  console.log({ correspondingSeqs });
 
-                  seq.metadata.push(metadata);
+                  correspondingSeqs.forEach(seq => {
+                    console.log({ seq });
+                    if (!("metadata" in seq)) {
+                      seq.metadata = [];
+                    }
+
+                    let metadata = {
+                      positions: r.ranges,
+                      color: style.fill,
+                      label: cat.label
+                    };
+
+                    seq.metadata.push(metadata);
+                  });
                 });
               }
             });
