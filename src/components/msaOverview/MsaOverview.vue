@@ -173,6 +173,7 @@ export default {
                       console.error(
                         "[MSA overview] error in metadata, no sequence " + seqId
                       );
+                      correspondingSeqs = [];
                     } else {
                       correspondingSeqs = [correspondingSeq];
                     }
