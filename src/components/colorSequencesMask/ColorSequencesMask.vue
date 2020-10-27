@@ -39,8 +39,9 @@ export default {
                 let w = this.xScale(end + 1) - startX;
 
                 let color = e.color;
+                let opacity = e.opacity;
 
-                this.drawRect({ startX, startY, h, w, color });
+                this.drawRect({ startX, startY, h, w, color, opacity });
               });
             }
           });
@@ -50,10 +51,12 @@ export default {
     drawRect(o) {
       const canvas = this.$refs["canvas"];
       let context = canvas.getContext("2d");
-      context.globalAlpha = 0.5;
+      // context.globalAlpha = 0.5;
 
+      console.log({ o });
       context.beginPath();
       context.fillStyle = o.color;
+      context.globalAlpha = o.opacity;
       context.rect(o.startX, o.startY, o.w, o.h);
       context.fill();
       context.closePath();

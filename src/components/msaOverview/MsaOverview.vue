@@ -187,9 +187,21 @@ export default {
                       seq.metadata = [];
                     }
 
+                    let color = "black";
+                    if (style.fill) {
+                      color = style.fill;
+                    }
+
+                    let opacity = 0.3;
+
+                    if (style["fill-opacity"]) {
+                      opacity = style["fill-opacity"];
+                    }
+
                     let metadata = {
                       positions: r.ranges,
-                      color: style.fill,
+                      color: color,
+                      opacity: opacity,
                       label: cat.label
                     };
 
