@@ -77,7 +77,7 @@ export default {
 
                 let w = this.xScale(end + 1) - startX;
 
-                let color = feature.color ? feature.color : this.randomColor();
+                let color = feature.color ? feature.color : "black";
                 let title = `${trackLabel}-${feature.type}(${pos[0]}:${
                   pos[1]
                 })`;

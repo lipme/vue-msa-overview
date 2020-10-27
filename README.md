@@ -178,6 +178,9 @@ tracks: [
       ]
 ~~~~
 
+If color is not defined, the color will be black.
+
+
 If you want to hide tracks: 
 
 ~~~~
