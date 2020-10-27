@@ -179,10 +179,7 @@ export default {
                     }
                   }
 
-                  console.log({ correspondingSeqs });
-
                   correspondingSeqs.forEach(seq => {
-                    console.log({ seq });
                     if (!("metadata" in seq)) {
                       seq.metadata = [];
                     }
