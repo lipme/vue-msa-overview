@@ -53,7 +53,6 @@ export default {
       let context = canvas.getContext("2d");
       // context.globalAlpha = 0.5;
 
-      console.log({ o });
       context.beginPath();
       context.fillStyle = o.color;
       context.globalAlpha = o.opacity;
