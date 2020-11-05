@@ -148,7 +148,7 @@ export default {
         }
         const category = {
           label: c.label,
-          style: { fill: c.color },
+          style: { fill: c.color, "fill-opacity": 0.5 },
           regions: regions
         };
         categories.push(category);

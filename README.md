@@ -69,7 +69,7 @@ metadata :[
     categories : [
       {
         label: "cat 1",
-        style: {fill: 'red', opacity:0.3},
+        style: {fill: 'red', 'fill-opacity':0.3},
         regions: 
         [
           {
@@ -102,7 +102,7 @@ metadata :[
 ]
 ~~~
 
-id:'_all' will apply the metadata on all the sequences. If style.color is not defined, the color is black. If style.opacity is not defined, the opacity is 0.3.
+id:'_all' will apply the metadata on all the sequences. If style.color is not defined, the color is black. If style[fill-opacity] is not defined, the opacity is 0.3.
 
 ### Display the different layers
 
