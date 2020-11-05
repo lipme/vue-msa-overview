@@ -149,7 +149,8 @@ tracks: [
             {
               positions: [[21, 108]],
               type: 'label2',
-              color: 'pink'
+              color: 'pink',
+              'fill-opacity': 0.9
             }
           ],
           trackLabel: 'track1'
@@ -178,7 +179,8 @@ tracks: [
       ]
 ~~~~
 
-If color is not defined, the color will be black.
+If color is not defined, the color will be black. If fill-opacity is not defined, the opacity is 0.3.
+
 
 
 If you want to hide tracks: 

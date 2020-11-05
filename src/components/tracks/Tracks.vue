@@ -10,7 +10,9 @@
       :style="
         `position:absolute;height:${rect.height}px;width:${rect.width}px;top:${
           rect.startY
-        }px;left:${rect.startX}px;background-color:${rect.color}`
+        }px;left:${rect.startX}px;background-color:${rect.color};opacity:${
+          rect.opacity
+        };`
       "
       :title="rect.title"
     ></div>
@@ -82,6 +84,11 @@ export default {
                   pos[1]
                 })`;
 
+                let opacity = 0.3;
+                if ("fill-opacity" in feature) {
+                  opacity = feature["fill-opacity"];
+                }
+
                 i++;
                 const rect = {
                   startX: startX,
@@ -90,7 +97,8 @@ export default {
                   width: w,
                   color: color,
                   title: title,
-                  id: `rect${i}`
+                  id: `rect${i}`,
+                  opacity: opacity
                 };
                 rects.push(rect);
               });
