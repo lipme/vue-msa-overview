@@ -191,7 +191,7 @@ export default {
 
                     let opacity = 0.3;
 
-                    if (style["fill-opacity"]) {
+                    if ("fill-opacity" in style) {
                       opacity = style["fill-opacity"];
                     }
 

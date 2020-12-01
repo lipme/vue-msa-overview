@@ -125,7 +125,8 @@ export default {
           let feature = {
             positions: this.randomPositions(Number(this.lseq) + 1, 1),
             type: `feat${j}`,
-            color: this.randomColor()
+            color: this.randomColor(),
+            "fill-opacity": 1
           };
           features.push(feature);
         }
@@ -148,7 +149,7 @@ export default {
         }
         const category = {
           label: c.label,
-          style: { fill: c.color },
+          style: { fill: c.color, "fill-opacity": "1" },
           regions: regions
         };
         categories.push(category);

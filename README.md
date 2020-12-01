@@ -4,6 +4,9 @@
 
 Vue component for displaying an overview of a multiple sequence alignment.
 
+![screenshot](https://raw.githubusercontent.com/lipme/vue-msa-overview/master/public/images/screenshot.png)
+
+
 ## Installation
 
 npm install --save vue-msa-overview
@@ -69,7 +72,7 @@ metadata :[
     categories : [
       {
         label: "cat 1",
-        style: {fill: 'red', opacity:0.3},
+        style: {fill: 'red', 'fill-opacity':0.3},
         regions: 
         [
           {
@@ -102,7 +105,7 @@ metadata :[
 ]
 ~~~
 
-id:'_all' will apply the metadata on all the sequences. If style.color is not defined, the color is black. If style.opacity is not defined, the opacity is 0.3.
+id:'_all' will apply the metadata on all the sequences. If style.color is not defined, the color is black. If style[fill-opacity] is not defined, the opacity is 0.3.
 
 ### Display the different layers
 
@@ -149,7 +152,8 @@ tracks: [
             {
               positions: [[21, 108]],
               type: 'label2',
-              color: 'pink'
+              color: 'pink',
+              'fill-opacity': 0.9
             }
           ],
           trackLabel: 'track1'
@@ -178,7 +182,8 @@ tracks: [
       ]
 ~~~~
 
-If color is not defined, the color will be black.
+If color is not defined, the color will be black. If fill-opacity is not defined, the opacity is 0.3.
+
 
 
 If you want to hide tracks: 
