@@ -4,7 +4,7 @@
 
 Vue component for displaying an overview of a multiple sequence alignment.
 
-![screenshot](https://raw.githubusercontent.com/lipme/vue-msa-overview/master/public/screenshot.png)
+![screenshot](https://raw.githubusercontent.com/lipme/vue-msa-overview/master/public/images/screenshot.png)
 
 
 ## Installation
