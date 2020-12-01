@@ -12,28 +12,32 @@
     "license": "Apache-2.0",
     "author": {
         "name": "Ludovic Cottret",
-        "email": "ludovic.cottret@inra.fr"
+        "email": "ludovic.cottret@inrae.fr"
     },
     "contributors": [
         {
             "name": "Erika Sallet",
-            "email": "erika.sallet@inra.fr"
+            "email": "erika.sallet@inrae.fr"
         },
         {
             "name": "Jérôme Gouzy",
-            "email": "jerome.gouzy@inra.fr"
+            "email": "jerome.gouzy@inrae.fr"
         },
         {
             "name": "Sébastien Carrere",
-            "email": "sebastien.carrere@inra.fr"
+            "email": "sebastien.carrere@inrae.fr"
         },
         {
             "name": "Ludovic Legrand",
-            "email": "ludovic.legrand@inra.fr"
+            "email": "ludovic.legrand@inrae.fr"
         }
     ],
     "bugs": {
-        "email": "ludovic.cottret@inra.fr"
+        "email": "ludovic.cottret@inrae.fr"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/lipme/vue-msa-overview.git"
     },
     "main": "./dist/msa-overview.common.js",
     "scripts": {
